@@ -38,7 +38,7 @@ namespace BugTracker
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-             
+              
         }
 
         
