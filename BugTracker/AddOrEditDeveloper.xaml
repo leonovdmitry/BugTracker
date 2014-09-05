@@ -1,0 +1,18 @@
+﻿<Window x:Class="BugTracker.AddOrEditDeveloper"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Разработчик" Height="177" Width="300">
+    <Grid Margin="0,0,0,103">
+        <StackPanel HorizontalAlignment="Center" Height="144" Margin="1,0,1,-100" VerticalAlignment="Top" Width="auto">
+            <Label x:Name="DeveloperNameLbl" Content="ФИО"/>
+            <TextBox x:Name="DeveloperNameTxtb" Height="23" TextWrapping="Wrap" Text="" Width="290"/>
+            <Label x:Name="DeveloperContactLbl" Content="Телефон"/>
+            <TextBox x:Name="DeveloperContactTxtb" Height="23" TextWrapping="Wrap" Text=""/>
+            <WrapPanel HorizontalAlignment="Right" Height="27" VerticalAlignment="Bottom" Width="159" Margin="0,10,0,0">
+                <Button x:Name="OkBtn" Content="Ok" Width="75" Click="OkBtn_Click"/>
+                <Button x:Name="CancelBtn" Content="Отмена" Width="75" Margin="5,0,0,0" Click="CancelBtn_Click"/>
+            </WrapPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>
