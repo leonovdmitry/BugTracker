@@ -38,7 +38,23 @@ namespace BugTracker
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-              
+            try
+            {
+                var develpoer = new Developer
+                {
+                    Id = _developer.Id,
+                    Name = DeveloperNameTxtb.Text,
+                    Telefone = DeveloperContactTxtb.Text,
+                    Task = null
+                };
+                _dataManager.AddOrEditDeveloper(develpoer);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            Close();
+            
         }
 
         

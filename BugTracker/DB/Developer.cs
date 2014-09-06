@@ -16,13 +16,13 @@ namespace BugTracker.DB
     {
         public Developer()
         {
-            this.Tasks = new HashSet<Task>();
+            this.Task = new HashSet<Task>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Telefone { get; set; }
     
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task> Task { get; set; }
     }
 }

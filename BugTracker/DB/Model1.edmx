@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="BugsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Developers">
+        <EntityType Name="Developer">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -23,7 +23,7 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="Tasks">
+        <EntityType Name="Task">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -35,25 +35,25 @@
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="DeveloperId" Type="int" />
         </EntityType>
-        <Association Name="FK_Tasks_Tasks">
-          <End Role="Developers" Type="Self.Developers" Multiplicity="0..1" />
-          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+        <Association Name="FK_Developers_Tasks">
+          <End Role="Developer" Type="Self.Developer" Multiplicity="0..1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Developers">
+            <Principal Role="Developer">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Tasks">
+            <Dependent Role="Task">
               <PropertyRef Name="DeveloperId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BugsModelStoreContainer">
-          <EntitySet Name="Developers" EntityType="Self.Developers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Developer" EntityType="Self.Developer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Tasks_Tasks" Association="Self.FK_Tasks_Tasks">
-            <End Role="Developers" EntitySet="Developers" />
-            <End Role="Tasks" EntitySet="Tasks" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Developers_Tasks" Association="Self.FK_Developers_Tasks">
+            <End Role="Developer" EntitySet="Developer" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -72,11 +72,11 @@
         </EntityType>
         <EntityContainer Name="BugsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="Developers" EntityType="BugsModel.Developer" />
-          <EntitySet Name="Tasks" EntityType="BugsModel.Task" />
-          <AssociationSet Name="FK_Tasks_Tasks" Association="BugsModel.FK_Tasks_Tasks">
-            <End Role="Developers" EntitySet="Developers" />
-            <End Role="Tasks" EntitySet="Tasks" />
+          <EntitySet Name="Developer" EntityType="BugsModel.Developer" />
+          <EntitySet Name="Task" EntityType="BugsModel.Task" />
+          <AssociationSet Name="FK_Developers_Tasks" Association="BugsModel.FK_Developers_Tasks">
+            <End Role="Developer" EntitySet="Developer" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Developer">
@@ -86,7 +86,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Telefone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Tasks" Relationship="BugsModel.FK_Tasks_Tasks" FromRole="Developers" ToRole="Tasks" />
+          <NavigationProperty Name="Task" Relationship="BugsModel.FK_Developers_Tasks" FromRole="Developer" ToRole="Task" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -99,16 +99,16 @@
           <Property Name="Comment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="DeveloperId" Type="Int32" />
-          <NavigationProperty Name="Developers" Relationship="BugsModel.FK_Tasks_Tasks" FromRole="Tasks" ToRole="Developers" />
+          <NavigationProperty Name="Developer" Relationship="BugsModel.FK_Developers_Tasks" FromRole="Task" ToRole="Developer" />
         </EntityType>
-        <Association Name="FK_Tasks_Tasks">
-          <End Type="BugsModel.Developer" Role="Developers" Multiplicity="0..1" />
-          <End Type="BugsModel.Task" Role="Tasks" Multiplicity="*" />
+        <Association Name="FK_Developers_Tasks">
+          <End Type="BugsModel.Developer" Role="Developer" Multiplicity="0..1" />
+          <End Type="BugsModel.Task" Role="Task" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Developers">
+            <Principal Role="Developer">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Tasks">
+            <Dependent Role="Task">
               <PropertyRef Name="DeveloperId" />
             </Dependent>
           </ReferentialConstraint>
@@ -130,18 +130,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Developers">
+          <EntitySetMapping Name="Developer">
             <EntityTypeMapping TypeName="BugsModel.Developer">
-              <MappingFragment StoreEntitySet="Developers">
+              <MappingFragment StoreEntitySet="Developer">
                 <ScalarProperty Name="Telefone" ColumnName="Telefone" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tasks">
+          <EntitySetMapping Name="Task">
             <EntityTypeMapping TypeName="BugsModel.Task">
-              <MappingFragment StoreEntitySet="Tasks">
+              <MappingFragment StoreEntitySet="Task">
                 <ScalarProperty Name="DeveloperId" ColumnName="DeveloperId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
@@ -152,7 +152,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

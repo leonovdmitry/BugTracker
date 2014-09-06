@@ -48,12 +48,14 @@ namespace BugTracker
 
         private void TaskAddBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var taskWindow = new AddOrEditTask(_dataManager, new Task());
+            taskWindow.ShowDialog();
         }
 
         private void TaskEditBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var taskWindow = new AddOrEditTask(_dataManager, (Task)TaskDataGrid.SelectedItem);
+            taskWindow.ShowDialog();
         }
 
         private void TaskDeleteBtn_Click(object sender, RoutedEventArgs e)
@@ -65,8 +67,14 @@ namespace BugTracker
         {
             
             DeveloperDataGrid.ItemsSource = _dataManager.GetDevelopers();
+            //foreach (var dataGridColumn in DeveloperDataGrid.Columns)
+            //{
+            //    if (dataGridColumn.Header.ToString() == "Id")
+            //        Visibility = Visibility.Hidden;
+            //}
             
             TaskDataGrid.ItemsSource = _dataManager.GetTasks();
+            
         }
 
         

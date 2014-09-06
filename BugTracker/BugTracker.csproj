@@ -108,10 +108,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddOrEditTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AddOrEditTask.xaml.cs">
+      <DependentUpon>AddOrEditTask.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataManager.cs" />
     <Compile Include="AddOrEditDeveloper.xaml.cs">
       <DependentUpon>AddOrEditDeveloper.xaml</DependentUpon>

@@ -22,6 +22,6 @@ namespace BugTracker.DB
         public int Status { get; set; }
         public Nullable<int> DeveloperId { get; set; }
     
-        public virtual Developer Developers { get; set; }
+        public virtual Developer Developer { get; set; }
     }
 }
