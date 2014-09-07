@@ -21,7 +21,7 @@ namespace BugTracker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly DataManager _dataManager= new DataManager(); 
+        private readonly DataManager _dataManager = new DataManager();
 
         public MainWindow()
         {
@@ -63,22 +63,86 @@ namespace BugTracker
 
         }
 
-        private void BugTrackerWindow_Initialized(object sender, EventArgs e)
+        private void BugTrackerWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            
-            DeveloperDataGrid.ItemsSource = _dataManager.GetDevelopers();
-            //foreach (var dataGridColumn in DeveloperDataGrid.Columns)
-            //{
-            //    if (dataGridColumn.Header.ToString() == "Id")
-            //        Visibility = Visibility.Hidden;
-            //}
-            
-            TaskDataGrid.ItemsSource = _dataManager.GetTasks();
-            
+            FillDeveloperGrid();
+            FillTaskGrid();
+            //DeveloperDataGrid.ItemsSource = _dataManager.GetDevelopers();
+            //TaskDataGrid.ItemsSource = _dataManager.GetTasks();
         }
 
-        
+        private void FillDeveloperGrid()
+        {
+            var developersToShow = from dev in _dataManager.GetDevelopers()
+                                   select new { dev.Name, dev.Telefone };
+            DeveloperDataGrid.ItemsSource = developersToShow;
+        }
 
-      
+        private void FillTaskGrid()
+        {
+            var taskStatus = new[]
+            {
+                "In progress", "End", "Not assigned"
+            };
+
+            var taskTypes = new[]
+            {
+                "Bug", "New feature","Task"
+            };
+
+            var tasksToShow = from task in _dataManager.GetTasks()
+                              select new { task.Date, task.Name, task.Type, task.Comment, task.Status };
+            TaskDataGrid.ItemsSource = tasksToShow;
+
+
+        }
+
+        private void DeveloperDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            var headerName = e.Column.Header.ToString();
+
+            switch (headerName)
+            {
+                case "Name":
+                    e.Column.Header = "ФИО";
+                    break;
+                case "Telefone":
+                    e.Column.Header = "Телефон";
+                    break;
+            }
+        }
+
+        private void TaskDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+
+            var headerName = e.Column.Header.ToString();
+            switch (headerName)
+            {
+                case "Date":
+                    e.Column.Header = "Дата";
+                    break;
+                case "Name":
+                    e.Column.Header = "Название";
+                    break;
+                case "Type":
+                    e.Column.Header = "Тип";
+                    break;
+                case "Comment":
+                    e.Column.Header = "Комментарий";
+                    break;
+                case "Status":
+                    e.Column.Header = "Статус";
+                    break;
+
+            }
+
+        }
+
+        private void ReportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //Выгрузка отчета по задачам
+        }
+
+
     }
 }
