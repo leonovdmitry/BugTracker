@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BugTracker.DB;
+using BugTracker.Model;
+using BugTracker.Model.Entities;
 
 namespace BugTracker
 {
@@ -20,9 +10,9 @@ namespace BugTracker
     /// </summary>
     public partial class AddOrEditDeveloper : Window
     {
-        private readonly DataManager _dataManager;
-        private readonly Developer _developer; 
-        public AddOrEditDeveloper(DataManager dataManager, Developer developer)
+        private readonly DataManage _dataManager;
+        private readonly DeveloperEntity _developer; 
+        public AddOrEditDeveloper(DataManage dataManager, DeveloperEntity developer)
         {
            InitializeComponent();
             _dataManager = dataManager;
@@ -40,14 +30,14 @@ namespace BugTracker
         {
             try
             {
-                var develpoer = new Developer
+                var develpoer = new DeveloperEntity
                 {
                     Id = _developer.Id,
                     Name = DeveloperNameTxtb.Text,
-                    Telefone = DeveloperContactTxtb.Text,
-                    Task = null
+                    Telefone = DeveloperContactTxtb.Text
+                    
                 };
-                _dataManager.AddOrEditDeveloper(develpoer);
+                _dataManager.DeveloperRepository.AddOrEditDeveloper(develpoer);
             }
             catch (Exception ex)
             {

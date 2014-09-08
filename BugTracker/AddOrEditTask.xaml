@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Задание" Height="398.864" Width="300">
     <Grid>
-        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,49" VerticalAlignment="Stretch">
+        <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,37" VerticalAlignment="Stretch">
             <Label x:Name="DateTaskLbl" Content="Дата создания"/>
             <DatePicker x:Name="TaskDateDp"/>
             <Label x:Name="TaskTypeLbl" Content="Тип"/>

@@ -3,11 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Name="BugTrackerWindow" x:Class="BugTracker.MainWindow"
         Title="BugTracker" Height="507" Width="900" ResizeMode="NoResize" Loaded="BugTrackerWindow_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="DeveloperCollectionViewSource"  CollectionViewType="ListCollectionView"/>
+        <CollectionViewSource x:Key="TaskCollectionViewSource"  CollectionViewType="ListCollectionView"/>
+    </Window.Resources>
     <Grid HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="894">
-        <DataGrid x:Name="DeveloperDataGrid" Height="445" VerticalAlignment="Top" HorizontalAlignment="Left" Width="280" AutoGenerateColumns="True" AutoGeneratingColumn="DeveloperDataGrid_AutoGeneratingColumn">
-            
+        <DataGrid x:Name="DeveloperDataGrid" DataContext="{StaticResource DeveloperCollectionViewSource}" Height="445" VerticalAlignment="Top" HorizontalAlignment="Left" Width="280" AutoGenerateColumns="False" ItemsSource="{Binding}"  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Path = Name}" />
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Path= Telefone}" />
+            </DataGrid.Columns>
         </DataGrid>
-        
         <WrapPanel Height="25" VerticalAlignment="Bottom"  Margin="0,0,0,0">
             <Button x:Name="DeveloperAddBtn" HorizontalAlignment ="Left" Content="Добавить" Width="75" Click="DeveloperAddBtn_Click"/>
             <Button x:Name="DeveloperEditBtn" Content="Изменить" Width="75" Click="DeveloperEditBtn_Click"/>
@@ -17,6 +23,15 @@
             <Button x:Name="TaskDeleteBtn" Content="Удалить" Width="75" Click="TaskDeleteBtn_Click"/>
             <Button x:Name="ReportBtn" Content="Отчет" Width="75" Click="ReportBtn_Click"/>
         </WrapPanel>
-        <DataGrid x:Name="TaskDataGrid" HorizontalAlignment="Right" Height="445" Width="600" Margin="0,0,0,0" VerticalAlignment="Top" AutoGeneratingColumn="TaskDataGrid_AutoGeneratingColumn"/>
+        <DataGrid x:Name="TaskDataGrid" DataContext="{StaticResource TaskCollectionViewSource}" HorizontalAlignment="Right" Height="445" Width="600" Margin="0,0,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" ItemsSource="{Binding}"  CanUserAddRows="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Path = Name}"/>
+                <DataGridTextColumn Header="Тип" Binding="{Binding Path= Type}" />
+                <DataGridTextColumn Header="Дата" Binding="{Binding Path= Date}" />
+                <DataGridTextColumn Header="Статус" Binding="{Binding Path= Status}" />
+                <DataGridTextColumn Header="Комментарий" Binding="{Binding Path= Comment}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BugTracker.DB;
+using BugTracker.Model;
+using BugTracker.Model.Entities;
 
 namespace BugTracker
 {
@@ -20,16 +10,14 @@ namespace BugTracker
     /// </summary>
     public partial class AddOrEditTask : Window
     {
-        private readonly DataManager _dataManager;
-        private readonly Task _task;
-        public AddOrEditTask(DataManager dataManager, Task task)
+        private readonly DataManage _dataManager;
+        private readonly TaskEntitty _task;
+        public AddOrEditTask(DataManage dataManager, TaskEntitty task)
         {
             InitializeComponent();
             _dataManager = dataManager;
             _task = task;
             SetFeilds();
-           
-            
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
@@ -39,16 +27,19 @@ namespace BugTracker
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
+            var developer = (DeveloperEntity)TaskDeveloperCb.SelectedItem;
             try
             {
-                var task = new Task();
+                var task = new TaskEntitty
                 {
-                    //Id = _developer.Id,
-                    //Name = DeveloperNameTxtb.Text,
-                    //Telefone = DeveloperContactTxtb.Text,
-                    //Task = null
+                    Name = TaskNameTb.Text,
+                    Status = TaskStatusCb.SelectedIndex,
+                    Type = TaskTypeCb.SelectedIndex,
+                    Date = (DateTime)TaskDateDp.SelectedDate,
+                    Comment = TaskCommentTb.Text,
+                    DeveloperId = developer.Id
                 };
-                _dataManager.AddOrEditTask(task);
+                _dataManager.TaskRepository.AddOrEditTask(task);
             }
             catch (Exception ex)
             {
@@ -73,17 +64,19 @@ namespace BugTracker
             TaskNameTb.Text = _task.Name;
             TaskCommentTb.Text = _task.Comment;
             TaskStatusCb.ItemsSource = taskStatus;
-            TaskTypeCb.SelectedIndex = _task.Status;
-            var developersList = _dataManager.GetDevelopers();
-            TaskDeveloperCb.ItemsSource = developersList;
-            if (_task.DeveloperId !=0)
-            {
-                TaskDeveloperCb.SelectedItem = developersList.SingleOrDefault(dev => dev.Id == _task.DeveloperId);
-            }
-            else
-            {
-                TaskDeveloperCb.SelectedIndex = 0;
-            }
+            TaskStatusCb.SelectedIndex = _task.Status;
+
+            TaskDeveloperCb.ItemsSource = _dataManager.DeveloperRepository.GetList();
+            
+            //if (_task.DeveloperId != 0)
+            //{
+            TaskDeveloperCb.SelectedItem = _task.DeveloperId - 1;
+
+            //}
+            //else
+            //{
+            //    TaskDeveloperCb.SelectedIndex = 0;
+            //}
 
         }
     }

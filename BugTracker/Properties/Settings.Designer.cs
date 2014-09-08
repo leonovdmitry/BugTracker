@@ -25,21 +25,10 @@ namespace BugTracker.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|DataDirectory|\\DB\\TaskDB.sdf")]
-        public string TaskDBConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=LYAM-PC;Initial Catalog=Bugs;Integrated Security=True")]
+        public string ConnectionString {
             get {
-                return ((string)(this["TaskDBConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|DataDirectory|\\DB\\TasklistDB.sdf")]
-        public string Database1ConnectionString {
-            get {
-                return ((string)(this["Database1ConnectionString"]));
+                return ((string)(this["ConnectionString"]));
             }
         }
     }
