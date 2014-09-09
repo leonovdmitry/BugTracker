@@ -5,14 +5,11 @@ using BugTracker.Model.Entities;
 
 namespace BugTracker
 {
-    /// <summary>
-    /// Interaction logic for AddOrEditTask.xaml
-    /// </summary>
-    public partial class AddOrEditTask : Window
+    public partial class AddOrEditTask
     {
-        private readonly DataManage _dataManager;
-        private readonly TaskEntitty _task;
-        public AddOrEditTask(DataManage dataManager, TaskEntitty task)
+        private readonly DataManager _dataManager;
+        private readonly Task _task;
+        public AddOrEditTask(DataManager dataManager, Task task)
         {
             InitializeComponent();
             _dataManager = dataManager;
@@ -27,19 +24,23 @@ namespace BugTracker
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-            var developer = (DeveloperEntity)TaskDeveloperCb.SelectedItem;
+            var developer = (Developer)TaskDeveloperCb.SelectedItem;
             try
             {
-                var task = new TaskEntitty
+                if (TaskDateDp.SelectedDate != null)
                 {
-                    Name = TaskNameTb.Text,
-                    Status = TaskStatusCb.SelectedIndex,
-                    Type = TaskTypeCb.SelectedIndex,
-                    Date = (DateTime)TaskDateDp.SelectedDate,
-                    Comment = TaskCommentTb.Text,
-                    DeveloperId = developer.Id
-                };
-                _dataManager.TaskRepository.AddOrEditTask(task);
+                    var task = new Task
+                    {
+                        Id = _task.Id,
+                        Name = TaskNameTb.Text,
+                        Status = TaskStatusCb.SelectedIndex,
+                        Type = TaskTypeCb.SelectedIndex,
+                        Date = (DateTime)TaskDateDp.SelectedDate,
+                        Comment = TaskCommentTb.Text,
+                        DeveloperId = developer.Id
+                    };
+                    _dataManager.TaskRepository.AddOrEditTask(task);
+                }
             }
             catch (Exception ex)
             {
@@ -48,6 +49,7 @@ namespace BugTracker
             Close();
         }
 
+        //заполнение полей если объект редактируется
         private void SetFeilds()
         {
             var taskTypes = new[]
@@ -56,7 +58,7 @@ namespace BugTracker
             };
             var taskStatus = new[]
             {
-                "In progress", "End", "Not assigned"
+                "Не назначена", "В работе", "Закончена"
             };
             TaskDateDp.SelectedDate = _task.Date;
             TaskTypeCb.ItemsSource = taskTypes;
@@ -67,10 +69,10 @@ namespace BugTracker
             TaskStatusCb.SelectedIndex = _task.Status;
 
             TaskDeveloperCb.ItemsSource = _dataManager.DeveloperRepository.GetList();
-            
+
             //if (_task.DeveloperId != 0)
             //{
-            TaskDeveloperCb.SelectedItem = _task.DeveloperId - 1;
+            TaskDeveloperCb.SelectedItem = _task.DeveloperId;
 
             //}
             //else

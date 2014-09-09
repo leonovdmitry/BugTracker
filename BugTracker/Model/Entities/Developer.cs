@@ -1,6 +1,7 @@
 ﻿namespace BugTracker.Model.Entities
 {
-    public class DeveloperEntity
+    //класс сущность разработчик
+    public class Developer
     {
         public int Id { get; set; }
         public string Name { get; set; }

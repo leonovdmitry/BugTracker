@@ -133,8 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\DataManage.cs" />
-    <Compile Include="Model\Entities\DeveloperEntity.cs" />
-    <Compile Include="Model\Entities\TaskEntitty.cs" />
+    <Compile Include="Model\Entities\Developer.cs" />
+    <Compile Include="Model\Entities\Task.cs" />
     <Compile Include="Model\Entities\TaskToView.cs" />
     <Compile Include="Model\Repositories\DeveloperRepository.cs" />
     <Compile Include="Model\Repositories\TaskRepository.cs" />

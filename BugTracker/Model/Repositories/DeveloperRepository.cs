@@ -5,24 +5,27 @@ using BugTracker.Model.Entities;
 
 namespace BugTracker.Model.Repositories
 {
+    //репозиторий для объетов developer 
     public class DeveloperRepository
     {
         private readonly SqlConnection _connection;
 
-        public DataManage DataManager { get; private set; }
+        public DataManager DataManager { get; private set; }
 
-        public DeveloperRepository(SqlConnection sqlConnection, DataManage dataManager)
+        public DeveloperRepository(SqlConnection sqlConnection, DataManager dataManager)
         {
             _connection = sqlConnection;
             DataManager = dataManager;
         }
 
-        public IEnumerable<DeveloperEntity> GetList()
+        //получить список всех разаработчиков
+        public IEnumerable<Developer> GetList()
         {
             return GetFromSql(new SqlCommand("select * from Developer", _connection));
         }
 
-        public void AddOrEditDeveloper(DeveloperEntity developer)
+        //определение: добавить или изменить разарботчика
+        public void AddOrEditDeveloper(Developer developer)
         {
             if (developer.Id == 0)
                 Add(developer);
@@ -30,7 +33,8 @@ namespace BugTracker.Model.Repositories
                 Edit(developer);
         }
 
-        public void Delete(DeveloperEntity developer)
+        //удалить разарботчика
+        public void Delete(Developer developer)
         {
             var query = string.Format("delete from Developer where Id = '{0}'", developer.Id);
             var cmd = new SqlCommand(query, _connection);
@@ -44,7 +48,8 @@ namespace BugTracker.Model.Repositories
             }
         }
 
-        private void Add(DeveloperEntity developer)
+        //добавление в базе
+        private void Add(Developer developer)
         {
             var query =
                 string.Format(
@@ -61,8 +66,9 @@ namespace BugTracker.Model.Repositories
                 throw new Exception("Ошибка добавления!", ex);
             }
         }
-        
-        private void Edit(DeveloperEntity developer)
+
+        //изменение в базе
+        private void Edit(Developer developer)
         {
             var query =
                 string.Format(
@@ -81,15 +87,16 @@ namespace BugTracker.Model.Repositories
             }
         }
 
-        private IEnumerable<DeveloperEntity> GetFromSql(SqlCommand cmd)
+        //обработчик sql команды
+        private IEnumerable<Developer> GetFromSql(SqlCommand cmd)
         {
-            var developerList = new List<DeveloperEntity>();
+            var developerList = new List<Developer>();
             using (var dataReader = cmd.ExecuteReader())
             {
                 while (dataReader.Read())
                 {
                     developerList.Add(
-                        new DeveloperEntity
+                        new Developer
                         {
                             Id = (int)dataReader["Id"],
                             Name = dataReader["Name"].ToString(),

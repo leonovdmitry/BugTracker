@@ -13,35 +13,32 @@ namespace BugTracker
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        private readonly DataManage _dataManager = new DataManage(Settings.Default.ConnectionString);
+        private readonly DataManager _dataManager = new DataManager(Settings.Default.ConnectionString);
 
         public MainWindow()
         {
-
             InitializeComponent();
         }
 
-
+        //Кнопки для управления разработчиками
         private void DeveloperAddBtn_Click(object sender, RoutedEventArgs e)
         {
-            var developerWindow = new AddOrEditDeveloper(_dataManager, new DeveloperEntity());
+            var developerWindow = new AddOrEditDeveloper(_dataManager, new Developer());
             developerWindow.ShowDialog();
             FillDeveloperGrid();
-            //SetDataGrids();
         }
 
         private void DeveloperEditBtn_Click(object sender, RoutedEventArgs e)
         {
             if (DeveloperDataGrid.SelectedItem != null)
             {
-                var developerWindow = new AddOrEditDeveloper(_dataManager, (DeveloperEntity)DeveloperDataGrid.SelectedItem);
+                var developerWindow = new AddOrEditDeveloper(_dataManager, (Developer)DeveloperDataGrid.SelectedItem);
                 developerWindow.ShowDialog();
             }
-
             FillDeveloperGrid();
-            //SetDataGrids();
+
 
         }
 
@@ -49,42 +46,40 @@ namespace BugTracker
         {
             if (DeveloperDataGrid.SelectedItem != null)
             {
-                _dataManager.DeveloperRepository.Delete((DeveloperEntity)DeveloperDataGrid.SelectedItem);
+                _dataManager.DeveloperRepository.Delete((Developer)DeveloperDataGrid.SelectedItem);
                 FillDeveloperGrid();
-                //SetDataGrids();
             }
 
 
         }
 
+        //Кнопки для управления задачами
         private void TaskAddBtn_Click(object sender, RoutedEventArgs e)
         {
-            var taskWindow = new AddOrEditTask(_dataManager, new TaskEntitty());
+            var taskWindow = new AddOrEditTask(_dataManager, new Task());
             taskWindow.ShowDialog();
             FillTaskGrid();
-            //SetDataGrids();
         }
 
         private void TaskEditBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (TaskDataGrid.SelectedItem != null)
+            var selectedItem = (TaskToView)TaskDataGrid.SelectedItem;
+            if (selectedItem != null)
             {
-                var taskWindow = new AddOrEditTask(_dataManager, (TaskEntitty)TaskDataGrid.SelectedItem);
+                var taskWindow = new AddOrEditTask(_dataManager, new Task(selectedItem));
                 taskWindow.ShowDialog();
             }
 
             FillTaskGrid();
-            //SetDataGrids();
-
         }
 
         private void TaskDeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             if (TaskDataGrid.SelectedItem != null)
             {
-                _dataManager.TaskRepository.Delete((TaskEntitty)TaskDataGrid.SelectedItem);
+                var task = (TaskToView)TaskDataGrid.SelectedItem;
+                _dataManager.TaskRepository.Delete(new Task(task));
                 FillTaskGrid();
-                //SetDataGrids();
             }
         }
 
@@ -95,6 +90,7 @@ namespace BugTracker
             CreateReport();
         }
 
+        // Создание отчета(xml-файл)
         private void CreateReport()
         {
             var xwriter = new XmlTextWriter("Tasklist.xml", Encoding.UTF8);
@@ -131,26 +127,24 @@ namespace BugTracker
             xwriter.Close();
             MessageBox.Show("Отчет создан!!!");
         }
-
-
+        //заполнение таблицы "разработчики"
         private void FillDeveloperGrid()
         {
-            //entity
-            //DeveloperDataGrid.ItemsSource = _dataManager.GetDevelopers();
             var developerCollectionViewSource = (CollectionViewSource)(FindResource("DeveloperCollectionViewSource"));
             developerCollectionViewSource.Source = _dataManager.DeveloperRepository.GetList();
-            //DeveloperDataGrid.ItemsSource = _dataManager.DeveloperRepository.GetList();
         }
-
+        //заполнение таблицы "задачи"
         private void FillTaskGrid()
         {
             //entity
             //TaskDataGrid.ItemsSource = _dataManager.GetTasks();
             var taskCollectionViewSource = (CollectionViewSource)(FindResource("TaskCollectionViewSource"));
-            taskCollectionViewSource.Source = _dataManager.TaskRepository.GetList();
+            taskCollectionViewSource.Source = _dataManager.TaskRepository.TasksToView(_dataManager.TaskRepository.GetList());
             // TaskDataGrid.ItemsSource = _dataManager.TaskRepository.GetList();
 
         }
+
+
 
 
         private void BugTrackerWindow_Loaded(object sender, RoutedEventArgs e)

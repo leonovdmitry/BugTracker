@@ -2,11 +2,12 @@
 
 namespace BugTracker.Model.Entities
 {
-    class TaskToView
+    //класс для вывода в таблицу задач (с текстовыми полями для типа, статуса)
+    public class TaskToView
     {
         private readonly string[] _taskTypes = { "Bug", "New feature", "Task" };
 
-        private readonly string[] _taskStatus = { "Not assigned", "In progress", "End" };
+        private readonly string[] _taskStatus = { "Не назначена", "В работе", "Закончена" };
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,8 +17,8 @@ namespace BugTracker.Model.Entities
         public string Comment { get; set; }
         public int DeveloperId { get; set; }
 
-
-        public TaskToView (TaskEntitty task)
+        //конструктор для создания "отображаемого" объекта задачи из объекта модели
+        public TaskToView (Task task)
         {
             Id = task.Id;
             Name = task.Name;

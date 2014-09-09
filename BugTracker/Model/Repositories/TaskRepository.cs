@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using BugTracker.Model.Entities;
 
 namespace BugTracker.Model.Repositories
 {
+    //репозиторий для объетов task 
     public class TaskRepository
     {
         private readonly SqlConnection _connection;
 
-        public DataManage DataManager { get; private set; }
+        public DataManager DataManager { get; private set; }
 
-        public TaskRepository(SqlConnection sqlConnect, DataManage dataManager)
+        public TaskRepository(SqlConnection sqlConnect, DataManager dataManager)
         {
             _connection = sqlConnect;
             DataManager = dataManager;
 
         }
 
-        public IEnumerable<TaskEntitty> GetList()
+        ////получить список всех задач
+        public List<Task> GetList()
         {
             var querry = new SqlCommand("select * from Task", _connection);
-            var taskList = new List<TaskEntitty>();
+            var taskList = new List<Task>();
             using (var dataReader = querry.ExecuteReader())
             {
                 while (dataReader.Read())
                 {
                     taskList.Add(
-                        new TaskEntitty
+                        new Task
                         {
                             Id = (int)dataReader["Id"],
                             Date = (DateTime)dataReader["Date"],
@@ -39,11 +42,24 @@ namespace BugTracker.Model.Repositories
                         });
                 }
             }
-
             return taskList;
         }
 
-        public void AddOrEditTask(TaskEntitty task)
+        //преобразование списка задач к "отображаемому" списку
+        public List<TaskToView> TasksToView(List<Task> tasks)
+        {
+            var taskList = tasks.Select(taskEntitty => new TaskToView(taskEntitty)).ToList();
+            return taskList;
+        }
+
+        //преобразование "отображаемого" списка к списку задач  
+        public List<Task> TaskViewToEntity(List<TaskToView> tasks)
+        {
+            return tasks.Select(taskToView => new Task(taskToView)).ToList();
+        }
+
+        //определение: добавление или редактирование задачи
+        public void AddOrEditTask(Task task)
         {
             if (task.Id == 0)
                 Add(task);
@@ -51,7 +67,8 @@ namespace BugTracker.Model.Repositories
                 Edit(task);
         }
 
-        public void Delete(TaskEntitty task)
+        //удаление
+        public void Delete(Task task)
         {
             var query = string.Format("delete from Task where Id = '{0}'", task.Id);
             var cmd = new SqlCommand(query, _connection);
@@ -66,7 +83,8 @@ namespace BugTracker.Model.Repositories
 
         }
 
-        private void Add(TaskEntitty task)
+        //добавлние в базе
+        private void Add(Task task)
         {
             var query =
                 string.Format(
@@ -88,11 +106,12 @@ namespace BugTracker.Model.Repositories
             }
         }
 
-        private void Edit(TaskEntitty task)
+        //редактирование в базе
+        private void Edit(Task task)
         {
             var query =
                 string.Format(
-                    "update Task set Date = {0}, Type = {1}, Name = {2}, Comment = {3}, Status = {4}, DeveloperId = {5}) where Id = {6})",
+                    "update Task set Date = '{0}', Type = '{1}', Name = '{2}', Comment = '{3}', Status = '{4}', DeveloperId = '{5}' where Id = '{6}'",
                     task.Date,
                     task.Type,
                     task.Name,

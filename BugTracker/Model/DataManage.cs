@@ -3,13 +3,14 @@ using BugTracker.Model.Repositories;
 
 namespace BugTracker.Model
 {
-    public class DataManage
+    //класс управления и доступа к данным хранит и инициализирует репозитории, создает подключение.
+    public class DataManager
     {
             public DeveloperRepository DeveloperRepository { get; private set; }
 
             public TaskRepository TaskRepository { get; private set; }
 
-            public DataManage(string connectionString)
+            public DataManager(string connectionString)
             {
                 var sqlConnect = new SqlConnection(connectionString);
                 sqlConnect.Open();

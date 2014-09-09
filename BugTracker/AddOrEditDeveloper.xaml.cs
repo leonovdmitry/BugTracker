@@ -5,20 +5,16 @@ using BugTracker.Model.Entities;
 
 namespace BugTracker
 {
-    /// <summary>
-    /// Interaction logic for AddOrEditDeveloper.xaml
-    /// </summary>
-    public partial class AddOrEditDeveloper : Window
+    public partial class AddOrEditDeveloper
     {
-        private readonly DataManage _dataManager;
-        private readonly DeveloperEntity _developer; 
-        public AddOrEditDeveloper(DataManage dataManager, DeveloperEntity developer)
+        private readonly DataManager _dataManager;
+        private readonly Developer _developer;
+        public AddOrEditDeveloper(DataManager dataManager, Developer developer)
         {
-           InitializeComponent();
+            InitializeComponent();
             _dataManager = dataManager;
             _developer = developer;
-            DeveloperContactTxtb.Text = _developer.Telefone;
-            DeveloperNameTxtb.Text = _developer.Name;
+            SetFields();
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
@@ -30,12 +26,12 @@ namespace BugTracker
         {
             try
             {
-                var develpoer = new DeveloperEntity
+                var develpoer = new Developer
                 {
                     Id = _developer.Id,
                     Name = DeveloperNameTxtb.Text,
                     Telefone = DeveloperContactTxtb.Text
-                    
+
                 };
                 _dataManager.DeveloperRepository.AddOrEditDeveloper(develpoer);
             }
@@ -44,9 +40,14 @@ namespace BugTracker
                 MessageBox.Show(ex.Message);
             }
             Close();
-            
+
         }
 
-        
+        //Заполнение полей
+        private void SetFields()
+        {
+            DeveloperContactTxtb.Text = _developer.Telefone;
+            DeveloperNameTxtb.Text = _developer.Name;
+        }
     }
 }

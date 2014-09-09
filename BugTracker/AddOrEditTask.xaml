@@ -15,7 +15,7 @@
             <Label x:Name="TaskStatusLbl" Content="Статус"/>
             <ComboBox x:Name="TaskStatusCb"/>
             <Label x:Name="DeveloperTaskLbl" Content="Разработчик"/>
-            <ComboBox x:Name="TaskDeveloperCb"/>
+            <ComboBox x:Name="TaskDeveloperCb" ItemsSource="{Binding Path=DeveloperEntity}" DisplayMemberPath="Name"/>
         </StackPanel>
         <Button x:Name="OkBtn" Content="Ok" HorizontalAlignment="Left" Margin="127,337,0,0" VerticalAlignment="Top" Width="75" Click="OkBtn_Click"/>
         <Button x:Name="CancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="207,337,0,0" VerticalAlignment="Top" Width="75" Click="CancelBtn_Click"/>
